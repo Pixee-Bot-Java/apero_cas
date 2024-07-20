@@ -1,5 +1,6 @@
 package org.apereo.cas.palantir.controller;
 
+import java.nio.file.Files;
 import org.apereo.cas.palantir.PalantirConstants;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
@@ -117,7 +118,7 @@ public class ServicesController {
     public ResponseEntity<Resource> export(@PathVariable("id") final long id) throws Exception {
         val registeredService = servicesManager.getObject().findServiceBy(id);
         val fileName = String.format("%s-%s", registeredService.getName(), registeredService.getId());
-        val serviceFile = File.createTempFile(fileName, ".json");
+        val serviceFile = Files.createTempFile(fileName, ".json").toFile();
         registeredServiceSerializer.to(serviceFile, registeredService);
         val headers = new HttpHeaders();
         val resource = new TemporaryFileSystemResource(serviceFile);
@@ -139,7 +140,7 @@ public class ServicesController {
             Unchecked.function(entry -> {
                 val service = (RegisteredService) entry;
                 val fileName = String.format("%s-%s", service.getName(), service.getId());
-                val sourceFile = File.createTempFile(fileName, ".json");
+                val sourceFile = Files.createTempFile(fileName, ".json").toFile();
                 registeredServiceSerializer.to(sourceFile, service);
                 return sourceFile;
             }), "services");
