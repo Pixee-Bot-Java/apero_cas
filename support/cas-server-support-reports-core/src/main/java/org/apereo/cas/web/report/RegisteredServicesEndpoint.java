@@ -1,6 +1,7 @@
 package org.apereo.cas.web.report;
 
 import io.github.pixee.security.ZipSecurity;
+import java.nio.file.Files;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
@@ -209,7 +210,7 @@ public class RegisteredServicesEndpoint extends BaseCasRestActuatorEndpoint {
             Unchecked.function(entry -> {
                 val service = (RegisteredService) entry;
                 val fileName = String.format("%s-%s", service.getName(), service.getId());
-                val sourceFile = File.createTempFile(fileName, ".json");
+                val sourceFile = Files.createTempFile(fileName, ".json").toFile();
                 serializer.to(sourceFile, service);
                 return sourceFile;
             }), "services");
