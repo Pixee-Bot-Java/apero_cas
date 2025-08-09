@@ -1,5 +1,6 @@
 package org.apereo.cas.authentication.mfa.trigger;
 
+import java.nio.file.Files;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 
@@ -33,7 +34,7 @@ class PredicatedPrincipalAttributeMultifactorAuthenticationTriggerTests extends 
     @Tag("DisableProviderRegistration")
     void verifyNoProviders() throws Throwable {
         val props = new CasConfigurationProperties();
-        val file = File.createTempFile("example", ".txt");
+        val file = Files.createTempFile("example", ".txt").toFile();
         FileUtils.writeStringToFile(file, "script", StandardCharsets.UTF_8);
         props.getAuthn().getMfa().getTriggers().getPrincipal().getGlobalPrincipalAttributePredicate().setLocation(new FileSystemResource(file));
         val trigger = new PredicatedPrincipalAttributeMultifactorAuthenticationTrigger(props, this.applicationContext);
@@ -56,7 +57,7 @@ class PredicatedPrincipalAttributeMultifactorAuthenticationTriggerTests extends 
     @Order(3)
     void verifyNoPredicate() throws Throwable {
         val props = new CasConfigurationProperties();
-        val file = File.createTempFile("predicate", ".txt");
+        val file = Files.createTempFile("predicate", ".txt").toFile();
         FileUtils.writeStringToFile(file, "script", StandardCharsets.UTF_8);
         props.getAuthn().getMfa().getTriggers().getPrincipal().getGlobalPrincipalAttributePredicate().setLocation(new FileSystemResource(file));
         val trigger = new PredicatedPrincipalAttributeMultifactorAuthenticationTrigger(props, this.applicationContext);
