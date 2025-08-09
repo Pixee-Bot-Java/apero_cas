@@ -1,5 +1,6 @@
 package org.apereo.cas.configuration;
 
+import java.nio.file.Files;
 import org.apereo.cas.test.CasTestExtension;
 import lombok.val;
 import org.apache.commons.io.FileUtils;
@@ -34,7 +35,7 @@ class CasConfigurationWatchServiceTests {
 
     @Test
     void verifyOperationByFile() throws Throwable {
-        val cas = File.createTempFile("cas", ".properties");
+        val cas = Files.createTempFile("cas", ".properties").toFile();
         FileUtils.writeStringToFile(cas, "server.port=0", StandardCharsets.UTF_8);
         val service = new CasConfigurationWatchService(applicationContext);
         service.initialize();
